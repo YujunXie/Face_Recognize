@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import os
 import numpy as np
 import json
@@ -7,22 +10,28 @@ import math
 import pickle
 import argparse
 from sklearn import neighbors
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 def bulid_DB(DirPath, detector, sp, facerec):
 
     data = np.zeros((1, 128))
     label = []
+    cnt = 0
 
     # 1 - read images
     for root, dirs, files in os.walk(DirPath):
         for d in dirs:
-            labelName = d
+            labelName = d.replace('(', '').replace(')', '')
             Filepath = os.path.join(root, d)
             for root1, dirs1, files1 in os.walk(Filepath):
+
+                if not files1:
+                    break
                 #for f in files1:
                 ImagePath = os.path.join(root1, files1[0])
+
                 im = Image.open(ImagePath)
+                im = im.convert('RGB')
                 array_im = np.array(im)
 
                 # 2 - detect faces
@@ -32,6 +41,7 @@ def bulid_DB(DirPath, detector, sp, facerec):
                     rec = dlib.rectangle(max(l.left(), 0), max(l.top(), 0), min(l.right(), array_im.shape[1]), min(l.bottom(), array_im.shape[0]))
                     landmarks = sp(array_im, rec)
 
+                    #drawBox(im, l, files1[0])
                     '''
                     # 3 - align faces
                     faces = dlib.full_object_detections()
@@ -39,29 +49,32 @@ def bulid_DB(DirPath, detector, sp, facerec):
                     im = dlib.get_face_chips(array_im, faces, 160, 0.1)
                     #Image.fromarray(im[0]).show()
                     '''
-
                     # 4 - computer feature vectors
-                    face_descriptor = facerec.compute_face_descriptor(im, landmarks)
+                    face_descriptor = facerec.compute_face_descriptor(array_im, landmarks)
                     faceArray = np.array(face_descriptor).reshape((1, 128))
                     data = np.concatenate((data, faceArray))
                     label.append(labelName)
                     print(labelName)
+                    cnt += 1
+                    print(cnt)
 
     # 保存人脸合成的矩阵到本地
     data = data[1:, :]
-    np.savetxt('faceData.txt', data, fmt='%f')
+    np.savetxt('StarFaceData.txt', data, fmt='%f')
 
-    labelFile = open('label.txt', 'w')
-    json.dump(label, labelFile)
+    labelFile = open('StarLabel.txt', 'w', encoding='utf-8')
+    json.dump(label, labelFile, ensure_ascii=False)
     labelFile.close()
 
-def findLabelInDB(face_descriptor, threshod):
+def findLabelInDB(face_descriptor, threshod, flag):
 
-    #data = np.zeros((1, 128))
-    #faceLabel = []
-    data = np.loadtxt('faceData.txt', dtype=np.float32)
+    if flag:
+        data = np.loadtxt('StarFaceData.txt', dtype=np.float32)
+        fl = open("StarLabel.txt", 'r', encoding='utf-8')
+    else:
+        data = np.loadtxt('LFWFaceData.txt', dtype=np.float32)
+        fl = open("LFWLabel.txt", 'r', encoding='utf-8')
 
-    fl = open("label.txt", 'r')
     faceLabel = json.load(fl)
 
     temp = face_descriptor - data
@@ -75,24 +88,34 @@ def findLabelInDB(face_descriptor, threshod):
     index = np.argmin(e)
     return faceLabel[index]
 
-def drawBox(im, location, label):
+def drawBox(im, location, label, flag):
+
+    if(flag):
+        star_path = "../mx/" + label + "/" + label + ".jpg"
+        if os.path.exists(star_path):
+            (Image.open(star_path)).show()
+        else:
+            print("no star image")
 
     draw = ImageDraw.Draw(im)
-
+    ft = ImageFont.truetype("C:/Windows/Fonts/STKAITI.TTF")
     left, top, right, bottom = (
-    max(location.left(), 0), max(location.top(), 0), min(location.right(), np.array(im).shape[1]), min(location.bottom(), np.array(im).shape[0]))
-    draw.rectangle((left, top, right, bottom), outline=(0, 0, 255))
-    label = label.encode("UTF-8")
-    text_width, text_height = draw.textsize(label)
-    draw.rectangle((left, bottom, right, bottom + text_height * 2), fill=(0, 0, 255), outline=(0, 0, 255))
-    draw.text((left + (right - left - text_width) / 2, bottom + text_height / 2), label, fill=(255, 255, 255, 255))
-
+        max(location.left(), 0), max(location.top(), 0), min(location.right(), np.array(im).shape[1]),
+        min(location.bottom(), np.array(im).shape[0]))
+    draw.rectangle((left, top, right, bottom), outline=(0, 0, 255), width=5)
+    text_width, text_height = ft.getsize(label)
+    draw.text((left + (right - left - text_width) / 2, bottom + text_height / 2), label, font=ft, fill=(255, 255, 255))
     im.show()
 
-def recognitionByDB(ImgPath, detector, sp, facerec, threshold):
+def recognitionByDB(ImgPath, detector, sp, facerec, threshold, flag):
     im = Image.open(ImgPath)
+    im = im.convert('RGB')
     array_im = np.array(im)
+    im.show()
     face_locations = detector(array_im, upsample_num_times=1)
+
+    if not face_locations:
+        print("no face detected")
 
     for l in face_locations:
         landmarks = sp(array_im, l)
@@ -102,10 +125,10 @@ def recognitionByDB(ImgPath, detector, sp, facerec, threshold):
 
         # 5 - compute distance
         face_descriptor = np.array(face_descriptor).reshape((1, 128))
-        label = findLabelInDB(face_descriptor, threshold)
+        label = findLabelInDB(face_descriptor, threshold, flag)
         print(label)
 
-        drawBox(im, l, label)
+        drawBox(im, l, label, flag)
 
 def trainKnn(DirPath, n_neighbors, detector, sp, facerec):
     X_train = []
@@ -154,7 +177,7 @@ def recognitionByKnn(ImgPath, detector, sp, facerec, threshold):
         #raise Exception("Must supply knn classifier either thourgh knn_clf or model_path")
 
     # Load a trained KNN model
-    with open('models/trained_knn_model.clf', 'rb') as f:
+    with open('models/star_trained_knn_model.clf', 'rb') as f:
         knn_clf = pickle.load(f)
 
     im = Image.open(ImgPath)
@@ -178,7 +201,7 @@ def recognitionByKnn(ImgPath, detector, sp, facerec, threshold):
             label_name = knn_clf.predict(face_encoding)[0]
 
         print(label_name)
-        drawBox(im, l, label_name)
+        drawBox(im, l, label_name, 0)
 
 def onlineRecognize(img, detector,sp, facerec):
     # dlib检测器
@@ -187,14 +210,10 @@ def onlineRecognize(img, detector,sp, facerec):
         landmarks = sp(img, face)
         face_descriptor = facerec.compute_face_descriptor(img, landmarks)
         face_descriptor = np.array(face_descriptor).reshape((1, 128))
-        label = findLabelInDB(face_descriptor, 0.6)
+        label = findLabelInDB(face_descriptor, 0.6, 1)
         print(label)
 
-        top, right, bottom, left = max(face.top(), 0), min(face.right(), img.shape[1]), min(face.bottom(), img.shape[0]), max(face.left(), 0)
-        cv.rectangle(img, (left, top), (right, bottom), (0, 0, 255), 2)
-        cv.putText(img, label, (left, bottom), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1)
-
-    cv.imshow('Image', img)
+        drawBox(Image.fromarray(cv.cvtColor(img, cv.COLOR_BGR2RGB)), face, label, 1)
 
     '''
     # opencv检测器

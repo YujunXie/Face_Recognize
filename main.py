@@ -15,6 +15,7 @@ if __name__ == '__main__':
     parser.add_argument("--n_neighbors", type=int, help="choose the number of neighbors", default=2)
     parser.add_argument("--online", help="online recognize faces through camera", action="store_true")
     parser.add_argument("--makeup", help="makeup for people in images", action="store_true")
+    parser.add_argument("--star", help="find the star you are alike most", action="store_true")
     args = parser.parse_args()
 
     if args.bulider == "DB":
@@ -27,7 +28,7 @@ if __name__ == '__main__':
         print("Training complete!")
 
     if args.recognize == "DB":
-        recognitionByDB(args.image_file, detector, sp, facerec, threshold)
+        recognitionByDB(args.image_file, detector, sp, facerec, threshold, 0)
     if args.recognize == "knn":
         recognitionByKnn(args.image_file, detector, sp, facerec, threshold)
 
@@ -43,3 +44,6 @@ if __name__ == '__main__':
 
     if args.makeup:
         Makeup(args.image_file, detector, sp)
+
+    if args.star:
+        recognitionByDB(args.image_file, detector, sp, facerec, threshold, 1)
