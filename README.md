@@ -16,19 +16,11 @@ download the project.
 
 #### Prerequisite
 
-[cmake](https://cmake.org/download/)
-
-[dlib](dlib[(http://dlib.net)
-
-[boost](http://www.boost.org/users/download/)
+[cmake](https://cmake.org/download/)，[dlib](http://dlib.net)，[boost](http://www.boost.org/users/download/)
 
 Environment Guide:
 
-[macOS](https://blog.csdn.net/gaoyueace/article/details/79198023)
-
-[Window](https://blog.csdn.net/qq_35044509/article/details/78882316)
-
-[Ubuntu](https://www.cnblogs.com/darkknightzh/p/5652791.html)
+[macOS](https://blog.csdn.net/gaoyueace/article/details/79198023)，[Window](https://blog.csdn.net/qq_35044509/article/details/78882316)，[Ubuntu](https://www.cnblogs.com/darkknightzh/p/5652791.html)
 
 Windows tips:
 
