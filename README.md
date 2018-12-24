@@ -65,21 +65,21 @@ k = 2
 
 threshold = 0.6
 
-![recognize.jpg](https://i.loli.net/2018/12/24/5c20bb4fa2325.png)
+![recognize.png](https://i.loli.net/2018/12/24/5c20bb4fa2325.png)
 
 #### Recognizing people online
 ```bash
 python main.py --online
 ```
 
-![online.jpg](https://i.loli.net/2018/12/24/5c20bb5026494.png)
+![online.png](https://i.loli.net/2018/12/24/5c20bb5026494.png)
 
 #### Makeup people in a image
 ```bash
 python main.py --makeup
 ```
 
-![makup.jpg](https://i.loli.net/2018/12/24/5c20bb4e801a4.png)
+![makup.png](https://i.loli.net/2018/12/24/5c20bb4e801a4.png)
 
 #### Which star you are alike most
 ```bash
@@ -87,11 +87,10 @@ python main.py --star
 ```
 
 素人：
-
-https://i.loli.net/2018/12/24/5c20bb4fd6718.png
+![suren.png](https://i.loli.net/2018/12/24/5c20bb4fd6718.png)
 
 明星：
-https://i.loli.net/2018/12/24/5c20bb4e0ddf3.png
+![star.png](https://i.loli.net/2018/12/24/5c20bb4e0ddf3.png)
 
 ### testing results on LFW
 
