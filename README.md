@@ -76,14 +76,14 @@ python main.py --online
 
 #### Makeup people in a image
 ```bash
-python main.py --makeup
+python main.py --makeup --image_file img_file_path
 ```
 
 ![makup.png](https://i.loli.net/2018/12/24/5c20bb4e801a4.png)
 
 #### Which star you are alike most
 ```bash
-python main.py --star
+python main.py --star --image_file img_file_path
 ```
 
 素人：
