@@ -22,13 +22,52 @@ Environment Guide:
 
 [macOS](https://blog.csdn.net/gaoyueace/article/details/79198023)，[Window](https://blog.csdn.net/qq_35044509/article/details/78882316)，[Ubuntu](https://www.cnblogs.com/darkknightzh/p/5652791.html)
 
-Windows tips:
+```
+pip install -r requirements.txt
+```
+
+#### Windows tips:
 
 Download and install scipy and numpy+mkl (must be mkl version) packages from [this link](https://www.lfd.uci.edu/~gohlke/pythonlibs/). Remember to grab correct version based on your current Python version.
 
 ## Usage
 
-#### Command-Line Interface
+### bulid DataBase for recognization
+
+* using DB
+```
+python main.py -b DB --image_file lfw/
+```
+
+* using Knn
+```
+python main.py -b Knn --image_file lfw/
+```
+
+#### Recognize people in a image
+
+* using DB
+```
+python main.py -r DB --image_file img_file_path
+```
+
+* using Knn
+```
+python main.py -r Knn --image_file img_file_path
+```
+
+#### Detecting people online
+```
+python main.py --online
+```
+
+#### Makeup people in a image
+```
+python main.py --makeup
+```
+
+#### Which star you are alike most
+
 
 
 
