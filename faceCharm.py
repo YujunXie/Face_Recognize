@@ -69,11 +69,11 @@ def bulid_DB(DirPath, detector, sp, facerec):
 def findLabelInDB(face_descriptor, threshod, flag):
 
     if flag:
-        data = np.loadtxt('StarFaceData.txt', dtype=np.float32)
-        fl = open("StarLabel.txt", 'r', encoding='utf-8')
+        data = np.loadtxt('data/StarFaceData.txt', dtype=np.float32)
+        fl = open("data/StarLabel.txt", 'r', encoding='utf-8')
     else:
-        data = np.loadtxt('LFWFaceData.txt', dtype=np.float32)
-        fl = open("LFWLabel.txt", 'r', encoding='utf-8')
+        data = np.loadtxt('data/LFWFaceData.txt', dtype=np.float32)
+        fl = open("data/LFWLabel.txt", 'r', encoding='utf-8')
 
     faceLabel = json.load(fl)
 
