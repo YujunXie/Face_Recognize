@@ -22,7 +22,7 @@ Environment Guide:
 
 [macOS](https://blog.csdn.net/gaoyueace/article/details/79198023)，[Window](https://blog.csdn.net/qq_35044509/article/details/78882316)，[Ubuntu](https://www.cnblogs.com/darkknightzh/p/5652791.html)
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
@@ -34,40 +34,61 @@ Download and install scipy and numpy+mkl (must be mkl version) packages from [th
 
 ### bulid DataBase for recognization
 
-* using DB
-```
+* training DB
+```bash
 python main.py -b DB --image_file lfw/
 ```
+DB file: FaceData.txt，label.txt
 
-* using Knn
-```
+* training Knn
+```bash
 python main.py -b Knn --image_file lfw/
 ```
+Knn model：models/trained_knn_model.clf
 
 #### Recognize people in a image
 
-* using DB
-```
+* testing DB
+```bash
 python main.py -r DB --image_file img_file_path
 ```
 
-* using Knn
-```
+* testing Knn
+```bash
 python main.py -r Knn --image_file img_file_path
 ```
+k = 2
+threshold = 0.6
+
+//识别结果
+![recognize.jpg]()
 
 #### Detecting people online
-```
+```bash
 python main.py --online
 ```
+//检测效果
+![detect.jpg]()
 
 #### Makeup people in a image
-```
+```bash
 python main.py --makeup
 ```
+//上妆效果
+![makup.jpg]()
 
 #### Which star you are alike most
+```bash
+python main.py --star
+```
+
+//可视化与相似明星距离
 
 
+### testing results on LFW
+
+testing results on lfw with pretrained resnet model on dlib.
+
+![result.png](https://i.loli.net/2018/12/24/5c205099632f2.png)
 
 
