@@ -9,6 +9,10 @@ dataset：[Labeled Faces in the Wild](http://vis-www.cs.umass.edu/lfw/)
 
 download the project.
 
+download dataset [lfw]((http://vis-www.cs.umass.edu/lfw/) in lfw-folder
+
+if you need the dataset of Asia Stars, please contact me.
+
 #### Requirements
 
   * Python 3.3+
