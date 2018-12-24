@@ -62,37 +62,40 @@ python main.py -r DB --image_file img_file_path
 python main.py -r Knn --image_file img_file_path
 ```
 k = 2
+
 threshold = 0.6
 
-//识别结果
-![recognize.jpg]()
+![recognize.jpg](https://i.loli.net/2018/12/24/5c20bb4fa2325.png)
 
-#### Detecting people online
+#### Recognizing people online
 ```bash
 python main.py --online
 ```
-//检测效果
-![detect.jpg]()
+
+![online.jpg](https://i.loli.net/2018/12/24/5c20bb5026494.png)
 
 #### Makeup people in a image
 ```bash
 python main.py --makeup
 ```
-//上妆效果
-![makup.jpg]()
+
+![makup.jpg](https://i.loli.net/2018/12/24/5c20bb4e801a4.png)
 
 #### Which star you are alike most
 ```bash
 python main.py --star
 ```
 
-//可视化与相似明星距离
+素人：
 
+https://i.loli.net/2018/12/24/5c20bb4fd6718.png
+
+明星：
+https://i.loli.net/2018/12/24/5c20bb4e0ddf3.png
 
 ### testing results on LFW
 
 testing results on lfw with pretrained resnet model on dlib.
 
 ![result.png](https://i.loli.net/2018/12/24/5c205099632f2.png)
-
 
