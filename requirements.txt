@@ -3,7 +3,7 @@ face-recognition==1.2.3
 image==1.5.27
 jupyter==1.0.0
 matplotlib==3.0.2
-numpy==1.15.4
+numpy==1.22.0
 opencv-python==3.4.3.18
 Pillow>=7.1.0
 scikit-image==0.14.1
